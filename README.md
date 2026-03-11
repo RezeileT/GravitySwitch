@@ -1,9 +1,5 @@
-# Korge Hello World and Template
+# Proyecto Final de Curso 2ºDAM
 
-This is a Hello World and Template for the KorGe game engine. Using gradle with kotlin-dsl.
-You can open this project in IntelliJ IDEA by opening the folder or the build.gradle.kts file.
+# Gravity Switch
 
-You can find this template at GitHub: <https://github.com/korlibs/korge-hello-world>
-
-
-You can find the KorGE documentation here: <https://docs.korge.org/korge/>
+Videojuego 2D de puzles para PC. Mecánicas de cambio de gravedad y puntuaciones persistentes. Utilizando las librerias de KorGe
