@@ -28,5 +28,5 @@ fun main() {
         }
     }
 
-    println("✅ SQLite OK (scores.db creado/actualizado)")
+    println("SQLite OK (scores.db creado/actualizado)")
 }

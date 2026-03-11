@@ -3,6 +3,7 @@ import java.sql.DriverManager
 object ScoreRepository {
     private const val DB_URL = "jdbc:sqlite:scores.db"
 
+    // Inicialización lazy: crea tabla en primer acceso
     init {
         DriverManager.getConnection(DB_URL).use { conn ->
             conn.createStatement().use { st ->
@@ -10,9 +11,9 @@ object ScoreRepository {
                     """
                     CREATE TABLE IF NOT EXISTS scores(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        player TEXT,
-                        level INTEGER,
-                        points INTEGER
+                        player TEXT NOT NULL,
+                        level INTEGER NOT NULL,
+                        points INTEGER NOT NULL
                     )
                     """.trimIndent()
                 )
@@ -20,6 +21,7 @@ object ScoreRepository {
         }
     }
 
+    // INSERT preparado (protege contra SQL injection)
     fun insert(score: Score) {
         DriverManager.getConnection(DB_URL).use { conn ->
             conn.prepareStatement(
@@ -33,6 +35,7 @@ object ScoreRepository {
         }
     }
 
+    // SELECT TOP N ordenados por puntos (DESC)
     fun getTop(limit: Int = 10): List<Score> {
         val result = mutableListOf<Score>()
 
@@ -43,6 +46,7 @@ object ScoreRepository {
                 ps.setInt(1, limit)
                 val rs = ps.executeQuery()
 
+                // Iterar resultados y mapear a Score
                 while (rs.next()) {
                     result += Score(
                         playerName = rs.getString("player"),
