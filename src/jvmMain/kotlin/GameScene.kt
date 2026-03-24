@@ -7,6 +7,7 @@ import korlibs.event.Key
 import korlibs.io.async.*
 import kotlin.time.DurationUnit
 
+
 class GameScene : Scene() {
     override suspend fun SContainer.sceneMain() {
         val input = views.input  // Estado de teclado por frame
@@ -32,12 +33,14 @@ class GameScene : Scene() {
         val gravity = 400.0        // Fuerza gravedad (px/s²)
         var gravityDirection = 1   // 1=abajo, -1=arriba
         var running = true         // Estado del juego
+        var elapsedSeconds = 0.0   // Tiempo total partida
 
         // Bucle principal del juego (60fps aprox)
         addUpdater { dt ->
             if (!running) return@addUpdater
 
             val seconds = dt.toDouble(DurationUnit.SECONDS)  // Delta time → segundos
+            elapsedSeconds += seconds
 
             // Movimiento horizontal (150 px/s)
             if (input.keys[Key.LEFT])  player.x -= 150 * seconds
@@ -65,7 +68,15 @@ class GameScene : Scene() {
             // Condición victoria (intersección con goal)
             if (player.globalBounds.intersects(goal.globalBounds)) {
                 running = false
-                showWinMessage()
+
+                //Calcular score
+                val points = (1000 - (elapsedSeconds * 100)).toInt().coerceAtLeast(0)
+                val score = Score("Player1", 1, points)
+
+                // ← GUARDAR en SQLite
+                ScoreRepository.insert(score)
+
+                showWinMessage(points, elapsedSeconds)
             }
 
             // Volver al menú (escape)
@@ -76,15 +87,12 @@ class GameScene : Scene() {
     }
 
     // Pantalla de victoria (overlay)
-    private fun SContainer.showWinMessage() {
-        text("¡Nivel completado!", textSize = 24.0) {
-            centerOnStage()
-            y -= 40.0
-        }
-        text("Pulsa ENTER para volver al menú", textSize = 16.0) {
-            centerOnStage()
-            y += 20.0
-        }
+    private fun SContainer.showWinMessage(points: Int, seconds: Double) {
+        text("¡Nivel completado!", textSize = 24.0) { centerOnStage(); y -= 60 }
+        text("Puntos: $points", textSize = 20.0) { centerOnStage(); y -= 20 }
+        text("Tiempo: ${"%.1f".format(seconds)}s", textSize = 18.0) { centerOnStage(); y += 10 }
+        text("Guardado en scores.db", textSize = 14.0, color = Colors["#00ff00"]) { centerOnStage(); y += 40 }
+        text("ENTER → Menú", textSize = 16.0) { centerOnStage(); y += 80 }
 
         // Segundo updater para la pantalla de victoria
         addUpdater {

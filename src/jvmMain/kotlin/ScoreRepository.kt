@@ -1,6 +1,6 @@
 import java.sql.DriverManager
 
-object ScoreRepository {
+object ScoreRepository{
     private const val DB_URL = "jdbc:sqlite:scores.db"
 
     // Inicialización lazy: crea tabla en primer acceso
@@ -13,7 +13,7 @@ object ScoreRepository {
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
                         player TEXT NOT NULL,
                         level INTEGER NOT NULL,
-                        points INTEGER NOT NULL
+                        score INTEGER NOT NULL
                     )
                     """.trimIndent()
                 )
@@ -25,7 +25,7 @@ object ScoreRepository {
     fun insert(score: Score) {
         DriverManager.getConnection(DB_URL).use { conn ->
             conn.prepareStatement(
-                "INSERT INTO scores(player, level, points) VALUES (?, ?, ?)"
+                "INSERT INTO scores(player, level, score) VALUES (?, ?, ?)"
             ).use { ps ->
                 ps.setString(1, score.playerName)
                 ps.setInt(2, score.level)
@@ -36,12 +36,12 @@ object ScoreRepository {
     }
 
     // SELECT TOP N ordenados por puntos (DESC)
-    fun getTop(limit: Int = 10): List<Score> {
+    fun getTop(limit: Int): List<Score> {
         val result = mutableListOf<Score>()
 
         DriverManager.getConnection(DB_URL).use { conn ->
             conn.prepareStatement(
-                "SELECT player, level, points FROM scores ORDER BY points DESC LIMIT ?"
+                "SELECT player, level, score FROM scores ORDER BY points DESC LIMIT ?"
             ).use { ps ->
                 ps.setInt(1, limit)
                 val rs = ps.executeQuery()
@@ -51,7 +51,7 @@ object ScoreRepository {
                     result += Score(
                         playerName = rs.getString("player"),
                         level = rs.getInt("level"),
-                        points = rs.getInt("points")
+                        points = rs.getInt("score")
                     )
                 }
             }
