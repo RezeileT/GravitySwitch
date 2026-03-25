@@ -9,6 +9,7 @@ import kotlin.time.DurationUnit
 
 
 class GameScene : Scene() {
+
     override suspend fun SContainer.sceneMain() {
         val input = views.input  // Estado de teclado por frame
 

@@ -5,34 +5,54 @@ import korlibs.math.geom.*
 import korlibs.korge.view.align.centerOnStage
 import korlibs.event.Key
 import korlibs.io.async.launchImmediately
+import korlibs.korge.input.onClick
+import korlibs.korge.ui.uiButton
+import korlibs.korge.ui.uiVerticalStack
 
 class MenuScene : Scene() {
     override suspend fun SContainer.sceneMain() {
-        // Fondo oscuro
         solidRect(Size(512, 512), Colors["#2b2b2b"])
 
-        // Título principal
         text("MENU SCENE", textSize = 32.0) {
             centerOnStage()
             y -= 40.0
         }
 
-        // Instrucción de control
         text("Pulsa ENTER para jugar", textSize = 20.0) {
             centerOnStage()
             y += 20.0
         }
 
-        // Acceso al input de teclado
         val input = views.input
 
-        // Bucle de actualización (60fps aprox)
+        uiVerticalStack(width = 300.0, padding = 20.0) {
+            centerOnStage()
+
+            uiButton("Jugar") {
+                onClick {
+                    launchImmediately {
+                        sceneContainer.changeTo { GameScene() }
+                    }
+                }
+            }
+
+            uiButton("Top Scores") {
+                onClick {
+                    launchImmediately {
+                        sceneContainer.changeTo{ ScoreScene() }
+                    }
+                }
+            }
+
+            uiButton("Salir") {
+                onClick { gameWindow.close() }
+            }
+        }
+
         addUpdater {
-            // Detectar pulsación única de ENTER
             if (input.keys.justPressed(Key.ENTER)) {
-                // Cambio de escena en corrutina
                 launchImmediately {
-                    sceneContainer.changeTo { GameScene() }
+                    sceneContainer.changeTo<GameScene>()
                 }
             }
         }

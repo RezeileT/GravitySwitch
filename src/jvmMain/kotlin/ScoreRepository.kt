@@ -41,7 +41,7 @@ object ScoreRepository{
 
         DriverManager.getConnection(DB_URL).use { conn ->
             conn.prepareStatement(
-                "SELECT player, level, score FROM scores ORDER BY points DESC LIMIT ?"
+                "SELECT player, level, score FROM scores ORDER BY score DESC LIMIT ?"
             ).use { ps ->
                 ps.setInt(1, limit)
                 val rs = ps.executeQuery()
