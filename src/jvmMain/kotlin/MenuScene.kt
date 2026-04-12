@@ -13,7 +13,7 @@ class MenuScene : Scene() {
     override suspend fun SContainer.sceneMain() {
         solidRect(Size(512, 512), Colors["#2b2b2b"])
 
-        text("MENU SCENE", textSize = 32.0) {
+        text("Gravity Switch", textSize = 32.0) {
             centerOnStage()
             y -= 40.0
         }
@@ -28,19 +28,31 @@ class MenuScene : Scene() {
         uiVerticalStack(width = 300.0, padding = 20.0) {
             centerOnStage()
 
-            uiButton("Jugar") {
+            /*uiButton("Jugar") {
                 onClick {
                     launchImmediately {
                         sceneContainer.changeTo { GameScene() }
                     }
                 }
-            }
+            }*/
 
             uiButton("Top Scores") {
                 onClick {
                     launchImmediately {
                         sceneContainer.changeTo{ ScoreScene() }
                     }
+                }
+            }
+
+            uiButton("Jugar nivel 1") {
+                onClick {
+                    launchImmediately { sceneContainer.changeTo { GameScene(1) } }
+                }
+            }
+
+            uiButton("Jugar nivel 2") {
+                onClick {
+                    launchImmediately { sceneContainer.changeTo { GameScene(2) } }
                 }
             }
 
