@@ -39,7 +39,7 @@ class ScoreScene : Scene() {
                     launchImmediately { sceneContainer.changeTo { MenuScene() } }
                 }
                 if (views.input.keys.justPressed(Key.SPACE)) {
-                    launchImmediately { sceneContainer.changeTo { GameScene(1) } }
+                    launchImmediately { sceneContainer.changeTo { GameScene() } }
                 }
             }
         }
