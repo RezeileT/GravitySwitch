@@ -1,3 +1,4 @@
+import korlibs.audio.sound.readSound
 import korlibs.korge.scene.*
 import korlibs.korge.view.*
 import korlibs.image.color.*
@@ -5,16 +6,31 @@ import korlibs.math.geom.*
 import korlibs.korge.view.align.centerOnStage
 import korlibs.event.Key
 import korlibs.io.async.launchImmediately
+import korlibs.io.file.std.resourcesVfs
 import korlibs.korge.input.onClick
 import korlibs.korge.ui.uiButton
 import korlibs.korge.ui.uiVerticalStack
+import korlibs.audio.sound.PlaybackTimes
+import korlibs.korge.input.onOut
+import kotlin.time.Duration.Companion.seconds
 
 class MenuScene : Scene() {
     override suspend fun SContainer.sceneMain() {
         val input = views.input
+        val screenW = views.virtualWidth.toDouble()
+        val screenH = views.virtualHeight.toDouble()
 
         // Fondo base
-        solidRect(Size(512, 512), Colors["#101820"])
+        solidRect(Size(screenW, screenH), Colors["#101820"])
+
+        // val bg = resourcesVfs["Assets/backgrounds/menu-bg.png"].readBitmap()
+        // image(bg) { position(0, 0) }
+
+        // Cargar y reproducir la música en loop
+        val music = resourcesVfs["Assets/audio/menu_theme.mp3"].readSound()
+        val channel = music.play(PlaybackTimes.INFINITE)
+        channel.volume = 0.6
+
 
         // Panel decorativo grande
         roundRect(
@@ -33,7 +49,6 @@ class MenuScene : Scene() {
             centerOnStage()
             y = 95.0
         }
-
 
 
         uiVerticalStack(width = 220.0, padding = 14.0) {
@@ -62,21 +77,6 @@ class MenuScene : Scene() {
                 }
             }
 
-            uiButton("Nivel 1") {
-                onClick {
-                    launchImmediately {
-                        sceneContainer.changeTo { GameScene() }
-                    }
-                }
-            }
-
-            uiButton("Nivel 2") {
-                onClick {
-                    launchImmediately {
-                        sceneContainer.changeTo { GameScene() }
-                    }
-                }
-            }
 
             uiButton("Salir") {
                 onClick { gameWindow.close() }
