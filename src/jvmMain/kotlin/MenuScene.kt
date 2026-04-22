@@ -11,8 +11,7 @@ import korlibs.korge.input.onClick
 import korlibs.korge.ui.uiButton
 import korlibs.korge.ui.uiVerticalStack
 import korlibs.audio.sound.PlaybackTimes
-import korlibs.korge.input.onOut
-import kotlin.time.Duration.Companion.seconds
+import korlibs.image.format.readBitmap
 
 class MenuScene : Scene() {
     override suspend fun SContainer.sceneMain() {
@@ -23,8 +22,8 @@ class MenuScene : Scene() {
         // Fondo base
         solidRect(Size(screenW, screenH), Colors["#101820"])
 
-        // val bg = resourcesVfs["Assets/backgrounds/menu-bg.png"].readBitmap()
-        // image(bg) { position(0, 0) }
+        val bg = resourcesVfs["Assets/backgrounds/fondo_menu.png"].readBitmap()
+        image(bg) { position(0, 0) }
 
         // Cargar y reproducir la música en loop
         val music = resourcesVfs["Assets/audio/menu_theme.mp3"].readSound()
@@ -44,16 +43,10 @@ class MenuScene : Scene() {
         }
 
 
-        // Título
-        text("Gravity Switch", textSize = 34.0, color = Colors.WHITE) {
-            centerOnStage()
-            y = 95.0
-        }
-
 
         uiVerticalStack(width = 220.0, padding = 14.0) {
             centerOnStage()
-            y = 220.0
+            y = 240.0
 
             uiButton("Jugar") {
                 onClick {

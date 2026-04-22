@@ -21,9 +21,15 @@ class GameScene : Scene() {
         val screenW = views.virtualWidth.toDouble()
         val screenH = views.virtualHeight.toDouble()
 
-        // --- FONDO ---
-        solidRect(screenW, screenH, Colors["#1e1e1e"])
-
+        // Fondo del nivel
+        val bgBitmap = resourcesVfs["Assets/backgrounds/fondo_nivel.png"].readBitmap()
+        val bg = image(bgBitmap) {
+            position(0.0, 0.0)
+            smoothing = false
+        }
+        // Escalar al tamaño exacto de la pantalla
+        bg.scaledWidth  = screenW
+        bg.scaledHeight = screenH
         // --- LÍMITES VERTICALES ---
         val floorY = 650.0
         val ceilY  = 60.0
