@@ -30,19 +30,16 @@ class MenuScene : Scene() {
         val channel = music.play(PlaybackTimes.INFINITE)
         channel.volume = 0.6
 
-
-        // Panel decorativo grande
+        // Panel decorativo
         roundRect(
-            Size(380.0, 300.0),          // size: Size2D
-            RectCorners(16.0, 16.0),     // radius: RectCorners
-            fill = Colors["#1b263b"]     // fill: Paint
+            Size(380.0, 300.0),
+            RectCorners(16.0, 16.0),
+            fill = Colors["#1b263b"]
         ) {
             centerOnStage()
             y += 10.0
             alpha = 0.95
         }
-
-
 
         uiVerticalStack(width = 220.0, padding = 14.0) {
             centerOnStage()
@@ -59,7 +56,7 @@ class MenuScene : Scene() {
             uiButton("Top Scores") {
                 onClick {
                     launchImmediately {
-                        sceneContainer.changeTo { ScoreScene() }
+                        sceneContainer.changeTo { ScoresScene() }
                     }
                 }
             }
@@ -70,20 +67,15 @@ class MenuScene : Scene() {
                 }
             }
 
-
             uiButton("Salir") {
                 onClick { gameWindow.close() }
             }
-
-
         }
 
         text("flechas para moverse  |   SPACE cambiar de gravedad", textSize = 14.0, color = Colors["#94a3b8"]) {
             centerOnStage()
             y = 490.0
         }
-
-
 
         addUpdater {
             if (input.keys.justPressed(Key.ENTER)) {

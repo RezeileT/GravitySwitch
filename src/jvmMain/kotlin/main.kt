@@ -8,6 +8,7 @@ suspend fun main() = Korge(
     virtualSize = Size(1280, 720),
     backgroundColor = Colors["#2b2b2b"]
 ) {
+    ScoreRepository.init()
     val sceneContainer = sceneContainer()
     sceneContainer.changeTo { MenuScene() }
 }
